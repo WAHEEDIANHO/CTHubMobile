@@ -4,17 +4,26 @@ import {View, Text, TextInput} from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {ThemedText} from "@/components/ThemedText";
 import {CthubInput} from "@/components/ui/CthubInput";
-import CthubButton from "@/components/ui/CthubButton";
-import CthubCheckBox from "@/components/ui/CthubCheckBox";
-import {Link} from "expo-router";
+import {CthubButton} from "@/components/ui/CthubButton";
+import {CthubCheckBox} from "@/components/ui/CthubCheckBox";
+import {Link, useRouter} from "expo-router";
 
 
 function Login() {
     const [email, SetEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [activityStatus, setActivityStatus] = useState<boolean>(false);
+    
+    const router = useRouter();
     
     const handleLogin = () => {
+        setActivityStatus(true);
         console.log(email, password);
+        setTimeout(() => {
+            setActivityStatus(false);
+            router.navigate("/");
+        }, 3000);
+        
     }
     
     return (
@@ -35,9 +44,7 @@ function Login() {
             <CthubInput label="Password" value={password} onChangeText={setPassword} secureTextEntry />
             
             <CthubCheckBox darkColor="#fff" lightColor="#000" label="Remember me" />
-            <Link href="/" asChild>
-                <CthubButton title="Sign in" onPress={handleLogin} />
-            </Link>
+            <CthubButton title="Sign in" onPress={handleLogin} activityStatus={activityStatus} disabled={activityStatus} />
             <View className="flex-row gap-x-2 w-screen justify-start">
                 <ThemedText>Don't have account?</ThemedText>
                 <Link href="/signup" className="text-yellow-300 font-bold">

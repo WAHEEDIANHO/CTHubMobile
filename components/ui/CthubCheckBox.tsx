@@ -9,7 +9,7 @@ type CthubCheckBoxProp = {
     darkColor?: string
 }
 
-export default function CthubCheckBox({ label, lightColor, darkColor }: CthubCheckBoxProp) {
+export function CthubCheckBox({ label, lightColor, darkColor }: CthubCheckBoxProp) {
     const [isChecked, setChecked] = useState(false);
     const borderColor = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 

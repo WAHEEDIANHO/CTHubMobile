@@ -1,15 +1,21 @@
 import React from 'react';
-import {Pressable, PressableProps, TouchableOpacity, TouchableOpacityProps, View} from "react-native";
+import {
+    ActivityIndicator,
+    TouchableOpacity,
+    TouchableOpacityProps,
+    View
+} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
 
 
 type Prop = TouchableOpacityProps & {
     title: string;
-    light?: boolean
+    light?: boolean,
+    activityStatus?: boolean
 }
 
 
-function CthubButton({title, light, ...args}: Prop) {
+export function CthubButton({title, light, activityStatus=false, ...args}: Prop) {
     return (
                 light ?
                     <TouchableOpacity
@@ -20,11 +26,14 @@ function CthubButton({title, light, ...args}: Prop) {
                     </TouchableOpacity> :
                     <TouchableOpacity
                         {...args}
-                        className={`text-center bg-amber-600 p-5 rounded-3xl my-5 w-full`}
+                        className={`text-center flex-col items-center bg-amber-600 p-5 rounded-3xl my-5 w-full`}
                     >
-                        <ThemedText lightColor="#000" type="defaultSemiBold" className="text-center">{title}</ThemedText>
+                        <View className="flex-row">
+                            { activityStatus && <ActivityIndicator/>}
+                            <ThemedText lightColor="#000" type="defaultSemiBold" className="ms-2">{title}</ThemedText>
+                        </View>
                     </TouchableOpacity>
     );
 }
 
-export default CthubButton;
+// export default CthubButton;

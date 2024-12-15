@@ -1,12 +1,9 @@
 import React from 'react';
 import {ThemedView} from "@/components/ThemedView";
-import {ThemedText} from "@/components/ThemedText";
-import CthubButton from "@/components/ui/CthubButton";
-import {CthubInput} from "@/components/ui/CthubInput";
-import {CthubModal} from "@/components/ui/CthubModal";
 import {Image, Text, TouchableOpacity, View} from "react-native";
 import {CtHubOverlay} from "@/components/ui/CtHubOverlay";
 import {Link} from "expo-router";
+import {CthubButton} from "@/components/ui/CthubButton";
 
 function Index() {
     return (
