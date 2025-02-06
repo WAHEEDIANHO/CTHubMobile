@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "759880374933",
+    "project_id": "cthub-438d5",
+    "storage_bucket": "cthub-438d5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759880374933:android:a1fc398bd4d88c4c12199c",
+        "android_client_info": {
+          "package_name": "com.waheedianho.cthub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4W_c-SXdh0-NHgYWvKE6aOBZ_YdaHMFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

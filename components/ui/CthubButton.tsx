@@ -26,7 +26,7 @@ export function CthubButton({title, light, activityStatus=false, ...args}: Prop)
                     </TouchableOpacity> :
                     <TouchableOpacity
                         {...args}
-                        className={`text-center flex-col items-center bg-amber-600 p-5 rounded-3xl my-5 w-full`}
+                        className={`text-center flex-col items-center bg-yellow-500 p-5 rounded-3xl my-5 w-full`}
                     >
                         <View className="flex-row">
                             { activityStatus && <ActivityIndicator/>}

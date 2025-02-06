@@ -1,4 +1,30 @@
-// import { StyleSheet, Image, Platform } from 'react-native';
+import React from 'react';
+import {useStopsQuery} from "@/hooks/stops/useStopsQuery";
+import {FlatList, Text, View} from "react-native";
+import {ThemedView} from "@/components/ThemedView";
+
+export default function Explore() {
+    const { isPending, isError, data, error } = useStopsQuery();
+
+    if (isPending) return <Text>Loading...</Text>
+    if (isError) return <Text>"Error cocured</Text>
+    
+    return (
+        <ThemedView safe>
+            <FlatList
+                data={data?.items}
+                scrollEnabled={true}
+                showsVerticalScrollIndicator={true}
+                className="mt-3 border border-red-500"
+                renderItem={({item}) =>
+                    <View>s
+                        <Text className="text-5xl">{item.stopName}</Text>
+                    </View>} />
+        </ThemedView>
+    );
+}
+
+// export default Explore;// import { StyleSheet, Image, Platform } from 'react-native';
 //
 // import { Collapsible } from '@/components/Collapsible';
 // import { ExternalLink } from '@/components/ExternalLink';

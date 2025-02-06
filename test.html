@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<h1>Stop Selector Form</h1>
+<form id="stopForm">
+    <label for="stopSelect">Select Stop:</label>
+    <select id="stopSelect" name="stopId" required></select>
+
+    <label for="previousStopSelect">Select Previous Stop:</label>
+    <select id="previousStopSelect" name="previousStopId" required></select>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    const stopSelect = document.getElementById('stopSelect');
+    const previousStopSelect = document.getElementById('previousStopSelect');
+
+    // Fetch data and populate dropdowns
+    async function populateDropdowns() {
+        try {
+            const response = await axios.get('http://localhost:5125/Stop/GetAll?PageIndex=1&PageSize=60');
+            const { stops: { items } } = response.data; // Assuming the response is an array of stops
+            console.log(items);
+
+            items?.forEach(stop => {
+                const option1 = document.createElement('option');
+                option1.value = stop.id; // Assuming each stop has an 'id' field
+                option1.textContent = stop.stopName; // Assuming each stop has a 'name' field
+                stopSelect.appendChild(option1);
+
+                const option2 = document.createElement('option');
+                option2.value = stop.id;
+                option2.textContent = stop.stopName;
+                previousStopSelect.appendChild(option2);
+            });
+        } catch (error) {
+            console.error('Error fetching stops:', error);
+        }
+    }
+
+    // Handle form submission
+    document.getElementById('stopForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const payload = {
+            stopId: stopSelect.value,
+            previousStopId: previousStopSelect.value
+        };
+
+        try {
+            const response = await axios.post('http://localhost:5125/Stop/AddPreviousStop', payload);
+            alert('Form submitted successfully!');
+            console.log('Response:', response.data);
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Failed to submit the form.');
+        }
+    });
+
+    // Populate dropdowns on page load
+    populateDropdowns();
+</script>
+</body>
+</html>
