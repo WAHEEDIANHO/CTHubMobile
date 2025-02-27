@@ -34,22 +34,22 @@ export default function TabLayout() {
         name={user.role == UserRole.Rider ? "(user)" : "(user)/driver"}
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="location-history" color={color} />,
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="clock.badge" color={color} />,
         }}
       />
         <Tabs.Screen
             name='account'
             options={{
                 title: 'Account',
-                tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-             }}
+                tabBarIcon: ({ color }) => <MaterialIcons size={28} name="location-history" color={color} />,
+            }}
         />
         
     </Tabs>

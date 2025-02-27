@@ -33,18 +33,22 @@ export function Assignment({setActiveSheet, activeSheet, conn }: AssignmentTypeP
             vehicleType: ride.vehincleType!
         });
     
-    const router = useRouter();
+    // const router = useRouter();
 
-    useEffect(() => {
+    // useEffect(() => {
         // data?.forEach((item: any) => (
         //     conn?.invoke("RideWaiter", `${ride.vehincleType == VehicleType.Tricycle ? "TRICYCLE" : "Car"}_${item.route}`, item.riderId)
         // ))
-        
-        conn?.on("EmitRideSchedule", (data: any) => {
-            console.log(`Ride Schedule: ${data}`);
-            router.navigate("/congratulation")
-        });
-    }, [data]);
+        // console.log(conn?.state, conn?.connectionId)
+        // conn?.on("EmitJoiningSchedule", (text: string) => {
+        //     console.log("walohi have join Assignment" + text)
+        // })
+        //
+        // conn?.on("EmitRideSchedule", (data: any) => {
+        //     console.log(`Ride Schedule: ${data}`);
+        //     router.navigate("/congratulation")
+        // });
+    // }, [data]);
 
     if (isPending) return <Text>Loading...</Text>
     // if (isError) console.log(error) 

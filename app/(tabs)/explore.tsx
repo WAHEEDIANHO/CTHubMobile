@@ -1,135 +1,69 @@
-import React from 'react';
-import {useStopsQuery} from "@/hooks/stops/useStopsQuery";
-import {FlatList, Text, View} from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import {ThemedView} from "@/components/ThemedView";
+import {useRouter} from "expo-router";
+import {useStopsQuery} from "@/hooks/stops/useStopsQuery";
 
-export default function Explore() {
+const tricycles = [
+    { id: "L319RS", name: "Bruce", vacancy: "1 Vacant - 40 m away", price: 22.0 },
+    { id: "L214RM", name: "Tony", vacancy: "1 Vacant - 33 m away", price: 16.0 },
+    { id: "L112ED", name: "Steve", vacancy: "3 Vacant - 28 m away", price: 16.0 },
+    { id: "L911BF", name: "Peter", vacancy: "Full", price: 16.0 },
+];
+
+const TricycleSelection = () => {
+    const [selected, setSelected] = useState(null);
+    const navigation = useRouter();
+
     const { isPending, isError, data, error } = useStopsQuery();
 
-    if (isPending) return <Text>Loading...</Text>
-    if (isError) return <Text>"Error cocured</Text>
-    
+    if (isPending) return <ThemedView safe ><Text>Loading...</Text></ThemedView>
+    if (isError) return <ThemedView><Text>"Error occured</Text></ThemedView>
+
     return (
-        <ThemedView safe>
-            <FlatList
-                data={data?.items}
-                scrollEnabled={true}
-                showsVerticalScrollIndicator={true}
-                className="mt-3 border border-red-500"
-                renderItem={({item}) =>
-                    <View>s
-                        <Text className="text-5xl">{item.stopName}</Text>
-                    </View>} />
+        <ThemedView safe className="flex-1 bg-white">
+            <View className="bg-yellow-500 p-4 flex-row items-center">
+                <TouchableOpacity onPress={() => navigation.back()}>
+                    <AntDesign name="arrowleft" size={24} color="black" />
+                </TouchableOpacity>
+                <Text className="text-xl font-semibold ml-4">History</Text>
+            </View>
+            
+
+            <ScrollView className="px-4 mt-4">
+                {tricycles.map((tricycle) => (
+                    <TouchableOpacity
+                        key={tricycle.id}
+                        className={`flex-row items-center bg-gray-100 p-4 mb-2 rounded-lg ${
+                            selected === tricycle.id ? "border-2 border-yellow-500" : ""
+                        }`}
+                        onPress={() => setSelected(tricycle.id)}
+                    >
+                        <MaterialCommunityIcons
+                            name="bike"
+                            size={40}
+                            color="black"
+                            className="mr-4"
+                        />
+                        <View className="flex-1">
+                            <Text className="font-semibold">
+                                {tricycle.id} - {tricycle.name}
+                            </Text>
+                            <Text className="text-gray-500 text-sm">{tricycle.vacancy}</Text>
+                        </View>
+                        {/*<Text className="text-gray-700 font-semibold">*/}
+                        {/*    ₱ {tricycle.price.toFixed(2)}*/}
+                        {/*</Text>*/}
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+
+            {/*<TouchableOpacity className="bg-yellow-500 mx-4 my-4 p-4 rounded-lg">*/}
+            {/*    <Text className="text-center font-semibold text-white">Continue</Text>*/}
+            {/*</TouchableOpacity>*/}
         </ThemedView>
     );
-}
+};
 
-// export default Explore;// import { StyleSheet, Image, Platform } from 'react-native';
-//
-// import { Collapsible } from '@/components/Collapsible';
-// import { ExternalLink } from '@/components/ExternalLink';
-// import ParallaxScrollView from '@/components/ParallaxScrollView';
-// import { ThemedText } from '@/components/ThemedText';
-// import { ThemedView } from '@/components/ThemedView';
-// import { IconSymbol } from '@/components/ui/IconSymbol';
-//
-// export default function TabTwoScreen() {
-//   return (
-//     <ParallaxScrollView
-//       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-//       headerImage={
-//         <IconSymbol
-//           size={310}
-//           color="#808080"
-//           name="chevron.left.forwardslash.chevron.right"
-//           style={styles.headerImage}
-//         />
-//       }>
-//       <ThemedView style={styles.titleContainer}>
-//         <ThemedText type="title">Explore</ThemedText>
-//       </ThemedView>
-//       <ThemedText>This app includes example code to help you get started.</ThemedText>
-//       <Collapsible title="File-based routing">
-//         <ThemedText>
-//           This app has two screens:{' '}
-//           <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-//           <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-//         </ThemedText>
-//         <ThemedText>
-//           The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-//           sets up the tab navigator.
-//         </ThemedText>
-//         <ExternalLink href="https://docs.expo.dev/router/introduction">
-//           <ThemedText type="link">Learn more</ThemedText>
-//         </ExternalLink>
-//       </Collapsible>
-//       <Collapsible title="Android, iOS, and web support">
-//         <ThemedText>
-//           You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-//           <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-//         </ThemedText>
-//       </Collapsible>
-//       <Collapsible title="Images">
-//         <ThemedText>
-//           For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-//           <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-//           different screen densities
-//         </ThemedText>
-//         <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-//         <ExternalLink href="https://reactnative.dev/docs/images">
-//           <ThemedText type="link">Learn more</ThemedText>
-//         </ExternalLink>
-//       </Collapsible>
-//       <Collapsible title="Custom fonts">
-//         <ThemedText>
-//           Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-//           <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-//             custom fonts such as this one.
-//           </ThemedText>
-//         </ThemedText>
-//         <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-//           <ThemedText type="link">Learn more</ThemedText>
-//         </ExternalLink>
-//       </Collapsible>
-//       <Collapsible title="Light and dark mode components">
-//         <ThemedText>
-//           This template has light and dark mode support. The{' '}
-//           <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-//           what the user's current color scheme is, and so you can adjust UI colors accordingly.
-//         </ThemedText>
-//         <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-//           <ThemedText type="link">Learn more</ThemedText>
-//         </ExternalLink>
-//       </Collapsible>
-//       <Collapsible title="Animations">
-//         <ThemedText>
-//           This template includes an example of an animated component. The{' '}
-//           <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-//           the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-//           library to create a waving hand animation.
-//         </ThemedText>
-//         {Platform.select({
-//           ios: (
-//             <ThemedText>
-//               The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-//               component provides a parallax effect for the header image.
-//             </ThemedText>
-//           ),
-//         })}
-//       </Collapsible>
-//     </ParallaxScrollView>
-//   );
-// }
-//
-// const styles = StyleSheet.create({
-//   headerImage: {
-//     color: '#808080',
-//     bottom: -90,
-//     left: -35,
-//     position: 'absolute',
-//   },
-//   titleContainer: {
-//     flexDirection: 'row',
-//     gap: 8,
-//   },
-// });
+export default TricycleSelection;

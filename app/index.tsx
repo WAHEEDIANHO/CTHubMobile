@@ -7,13 +7,13 @@ import {CthubButton} from "@/components/ui/CthubButton";
 import * as Location from "expo-location";
 import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import SignalRConn from "@/utils/real-time/signalRConn";
-// import {getDevicePushTokenAsync} from 'expo-notifications'
+import {getDevicePushTokenAsync} from 'expo-notifications'
 function Index() {
 
     useEffect(() => {
         (async _ => {
-            // const token = (await getDevicePushTokenAsync()).data;
-            // console.log(token, "this is token")
+            const token = (await getDevicePushTokenAsync()).data;
+            console.log(token, "this is token")
         })()
     }, []);
 

@@ -24,10 +24,11 @@ export type Loc = {
 
 type CTHubMapViewProp = {
     driverLocs?: Loc[] | null,
-    driverQueueQueryResponse: UseQueryResult
+    // driverQueueQueryResponse: UseQueryResult;
+    queueIdx: number
 }
 
-export function CtHubMapView({driverLocs}: CTHubMapViewProp) {
+export function CtHubMapView({driverLocs, queueIdx}: CTHubMapViewProp) {
     const mapRef = useRef<MapView>();
     const markerRef = useRef<MapMarker>();
     const ride = useRideStore(state => state.ride);
@@ -72,7 +73,7 @@ export function CtHubMapView({driverLocs}: CTHubMapViewProp) {
 
             {
                 user?.role == UserRole.Driver ? (
-                        <DriverPos />
+                        <DriverPos queueIdx={queueIdx} />
                 ): null
             }
 

@@ -12,6 +12,7 @@ import {Assignment} from "@/components/booking/Assignment";
 import SignalRConn from "@/utils/real-time/signalRConn";
 import {HubConnection} from "@microsoft/signalr";
 import {useUserStore} from "@/store/userStore";
+import {useRouter} from "expo-router";
 
 export type SheetStatusProps = {
         whereTo: boolean;
@@ -27,13 +28,19 @@ function Index() {
     const [driverLocs, setDriverLocs] = useState<Loc[]>();
     const [hubConnection, setHubConnection] = useState<HubConnection | undefined>();
     const user = useUserStore(state => state.user)
+    const router = useRouter();
     
 
+    if (!user) router.navigate("/login")
     useEffect(() => {
         (async function () {
             if (!SignalRConn.getConnection()) await SignalRConn.init(user.id);
             const conn: HubConnection = SignalRConn.getConnection()!;
             setHubConnection(conn)
+            
+            // conn.on("EmitJoiningSchedule", (text: string) => {
+            //     console.log("walohi have join")
+            // })
 
             conn.on("ReceiveMessage", (text: string) => {
                 console.log(text, "rider received loc");
@@ -45,6 +52,15 @@ function Index() {
                 setDriverLocs(driverLocs);
             })
             
+            conn.on("EmitRideSchedule", (data: any) => {
+                console.log(`Ride Schedule: ${data}`);
+                router.navigate(`/congratulation?data=${data}`)
+            });
+            
+            return () => {
+                conn.stop();
+                console.log("Connection stopped");
+            }
         })()
     }, []);
    

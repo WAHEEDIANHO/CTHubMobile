@@ -40,15 +40,15 @@ function Login() {
                 const { token, email, firstName, lastName, role, id } = data || {}
                 setActivityStatus(false);
                 cacheUser(token, firstName, lastName, email, role, id);
-                console.log(role,  "is here")
+                // console.log(role,  "is here")
                 role == UserRole.Rider ? router.navigate("/(tabs)/(user)") : router.navigate("/(tabs)/(user)/driver");
             },
             onError: (e) => {
-                console.log("error reaching server")
+                console.log("invalid login credentials")
                 SetEmail("");
                 setPassword("");
                 setActivityStatus(false);
-                router.navigate("/(tabs)/(user)");
+                // router.navigate("/(tabs)/(user)");
             }});
         //
         // console.log(resp)

@@ -11,6 +11,7 @@ import {useUserStore} from "@/store/userStore";
 import {useDriverEnqueueMutation} from "@/hooks/driver/useDriverEnqueueMutation";
 import {VehicleType} from "@/store/rideStore";
 import {UseQueryResult} from "@tanstack/react-query";
+import {getDevicePushTokenAsync} from "expo-notifications";
 type Location = {
     userId: string,
     latitude: number,
@@ -18,10 +19,12 @@ type Location = {
 }
 type DriverProps = {
     signalConn: HubConnection,
-    driverQueueQueryResponse: UseQueryResult
+    driverQueueQueryResponse: any,
+    setQueueIdx: React.Dispatch<React.SetStateAction<number>>,
+    queueIndex: number
 }
 
-export function Driver({ signalConn, driverQueueQueryResponse }: DriverProps) {
+export function Driver({ signalConn, driverQueueQueryResponse, setQueueIdx, queueIndex }: DriverProps) {
 
     const bottomSheetRef = useRef<BottomSheet>(null);
     const [activityStatus, setActivityStatus] = useState<boolean>(false)
@@ -38,14 +41,18 @@ export function Driver({ signalConn, driverQueueQueryResponse }: DriverProps) {
     async function handleQueue() {
         setActivityStatus(true);
         const {location} = userLocationContext;
+        const token = (await getDevicePushTokenAsync()).data;
+        console.log(token);
         joinDriverQueueMutation.mutate({
             driverId: user.id,
             latitude: ""+location?.coords.latitude!,
             longitude: ""+location?.coords.longitude!,
-            vehincle: VehicleType.Tricycle
+            vehincle: VehicleType.Tricycle,
+            token: token
         }, {
             onSuccess: (data: any) => {
                 console.log(data)
+                setQueueIdx(data.count);
                 setActivityStatus(false);
             },
             onError: (e) => {
@@ -59,7 +66,7 @@ export function Driver({ signalConn, driverQueueQueryResponse }: DriverProps) {
     }
     return (
         <CTHubBottomSheet hasPrevious={false} bottomSheetRef={bottomSheetRef} componetSnapPoint={[200]}>
-            <CthubButton title="Queue" onPress={handleQueue} activityStatus={activityStatus}  />
+            <CthubButton title="Queue" onPress={handleQueue} activityStatus={activityStatus} disabled={queueIndex > 0} />
         </CTHubBottomSheet>
     );
 }
